@@ -1,8 +1,6 @@
-import { BsCircle, BsSquare, BsPencil } from 'react-icons/bs';
+import { BsCircle, BsSquare, BsFillCursorFill } from 'react-icons/bs';
 import { AiOutlineLine } from 'react-icons/ai';
-import { FaDrawPolygon, FaSortAlphaUp } from 'react-icons/fa';
-import { CgShapeZigzag } from 'react-icons/cg';
-import { FaExpandArrowsAlt } from 'react-icons/fa';
+import { FaSortAlphaUp } from 'react-icons/fa';
 
 export enum SHAPE_TYPES {
     CIRCLE = 'Círculo',
@@ -53,7 +51,7 @@ export const TOOLS = [
         title: SHAPE_TYPES.TEXT
     },
     {
-        icon: FaExpandArrowsAlt,
+        icon: BsFillCursorFill,
         title: SHAPE_TYPES.PAN
     },
 ];

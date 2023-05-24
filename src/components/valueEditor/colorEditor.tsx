@@ -57,7 +57,7 @@ const ColorEditor: React.FC<props> = function ({ value, onChange, label, disable
                 showPalette
                     ? (
                         <div style={{ display: 'flex', alignItems: 'center', marginLeft: '30px' }} title='choose from palette'>
-                            <input type='color' value={value} onChange={changeHandler} title='choose from color picker'/>
+                            <input type='color' value={value} onChange={changeHandler} title='Elegir color'/>
                         </div>
                     )
                     : <input type='color' value={value} onChange={changeHandler} title='choose from color picker'/>
