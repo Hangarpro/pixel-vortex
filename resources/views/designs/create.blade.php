@@ -66,9 +66,6 @@
                             class="col-12 border">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center w-100" @click="seleccionarFigura(index)">
-                                    <i :class="asignarIconoFigura(figura.type)" class="fa-solid icon-figure"
-                                        :key="'iconoFigura' + index"
-                                        :style="{ color: obtenerColorRGB(figura.fill_r, figura.fill_g, figura.fill_b) }"></i>
                                     <h3 class="name-figure ms-2 mb-0">
                                         @{{ figura.type }} - @{{ figura.id }}
                                     </h3>
@@ -137,7 +134,8 @@
 
                                     <label for="" class="form-label text-black">Color</label>
                                     <input class="border" type="color" id="color_pick2"
-                                        @change="cambiarColor(figuraObjeto.id, 'border')" value="#000000"
+                                        @change="cambiarColor(figuraObjeto.id, 'border')"
+                                        :value="rgbToHex(figuraObjeto.border_r, figuraObjeto.border_g, figuraObjeto.border_b)"
                                         style="width:85%;">
 
                                 </div>
@@ -172,10 +170,12 @@
                                 <div class="col-6 mb-2">
                                     <label for="" class="form-label text-black">Color</label>
                                     <input v-if="figuraObjeto.type==='line'" type="color" id="color_pick"
-                                        @change="cambiarColor(figuraObjeto.id, 'fill')" value="#000000"
+                                        @change="cambiarColor(figuraObjeto.id, 'fill')"
+                                        :value="rgbToHex(figuraObjeto.fill_r, figuraObjeto.fill_g, figuraObjeto.fill_b)"
                                         style="width:85%; form-control border">
                                     <input v-else type="color" id="color_pick"
-                                        @change="cambiarColor(figuraObjeto.id, 'fill')" value="#ffffff"
+                                        @change="cambiarColor(figuraObjeto.id, 'fill')"
+                                        :value="rgbToHex(figuraObjeto.fill_r, figuraObjeto.fill_g, figuraObjeto.fill_b)"
                                         style="width:85%; form-control border">
                                 </div>
                                 <div class="col-6 mb-2">
@@ -391,9 +391,17 @@
                         element.selected = false;
                     });
                 },
-                cambiarColor(id, r, g, b, a, option) {
+                cambiarColor(id, option) {
+                    if (option == 'border') {
+                        var color = document.getElementById('color_pick2').value;
+                    } else {
+                        var color = document.getElementById('color_pick').value;
+                    }
+                    const r = parseInt(color.substr(1, 2), 16)
+                    const g = parseInt(color.substr(3, 2), 16)
+                    const b = parseInt(color.substr(5, 2), 16)
                     const index = this.figuras.findIndex(figura => figura.id === id);
-                    this.figuras[index].cambiarColorPredeterminado(r, g, b, a, option);
+                    this.figuras[index].cambiarColorPredeterminado(r, g, b, 255, option);
                 },
                 seleccionarFigura(index) {
                     this.resetearVariables();
@@ -436,6 +444,9 @@
                 },
                 obtenerColorRGB(r, g, b) {
                     return `rgb(${r}, ${g}, ${b})`;
+                },
+                rgbToHex(r, g, b) {
+                    return ('#' + r.toString(16) + g.toString(16) + b.toString(16));
                 },
                 asignarIconoFigura(tipo) {
                     if (tipo === 'rect') {

@@ -70,10 +70,6 @@
                                 class="col-12 border">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="d-flex align-items-center w-100" @click="seleccionarFigura(index)">
-                                        <i :class="asignarIconoFigura(figura.type)" class="fa-solid icon-figure"
-                                            :key="'iconoFigura' + index"
-                                            :style="{ color: obtenerColorRGB(figura.fill_r, figura.fill_g, figura.fill_b) }"></i>
-                                        <h3 class="name-figure ms-2 mb-0">
                                             @{{ figura.type }} - @{{ figura.id }}
                                         </h3>
                                     </div>
@@ -103,217 +99,218 @@
                                         </button>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="area-canvas" class="area-canvas d-flex justify-content-center align-items-center">
+
+                </div>
+
+                @if (session('success'))
+                    <div id="message-success" class="alert alert-success alert-dismissible fade show" role="alert">
+                        Se han guardado los cambios correctamente.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                            aria-label="Close"></button>
+                    </div>
+                @elseif (session('error'))
+                    <div id="message-error" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        Ha surgido un error, no se pudieron guardar los cambios.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                            aria-label="Close"></button>
+                    </div>
+                @endif
+                <div class="sidebar-options bg-light p-1">
+                    <div v-if="figuraSeleccionada&&figuraObjeto.type!=='line'"
+                        class="filled px-2 mb-4 mt-3 p-1 border">
+                        <div class="d-flex flex-column text-center mb-3">
+                            <h2 class="px-2 mb-0 text-secondary">
+                                Borde
+                            </h2>
+                        </div>
+                        <div class="row justify-content-center px-2 m-0">
+                            <div class="row justify-content-between" style="display: flex">
+                                <div class="col-6 mb-2">
+
+                                    <label for="" class="form-label text-black">Color</label>
+                                    <input class="border" type="color" id="color_pick2"
+                                        @change="cambiarColor(figuraObjeto.id, 'border')"
+                                        :value="rgbToHex(figuraObjeto.border_r, figuraObjeto.border_g, figuraObjeto.border_b)"
+                                        style="width:85%;">
+
+                                </div>
+
+                                <div class="col-6 mb-2">
+
+                                    <label for="" class="form-label text-black">Opacidad</label>
+                                    <input type="number" name="" id="border_a" class="ms-2 border"
+                                        min="0" max="255" v-model="figuraObjeto.border_a">
+
+                                </div>
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <div class="d-flex justify-content-center">
+                                    <label for="" class="me-4 text-black">Grosor:</label>
+                                    <input type="number" name="" id="thickness" class="ms-2 me-1 border"
+                                        min="0" max="255" v-model="figuraObjeto.thickness">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div id="area-canvas" class="area-canvas d-flex justify-content-center align-items-center">
-
-                    </div>
-
-                    @if (session('success'))
-                        <div id="message-success" class="alert alert-success alert-dismissible fade show"
-                            role="alert">
-                            Se han guardado los cambios correctamente.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                aria-label="Close"></button>
-                        </div>
-                    @elseif (session('error'))
-                        <div id="message-error" class="alert alert-danger alert-dismissible fade show"
-                            role="alert">
-                            Ha surgido un error, no se pudieron guardar los cambios.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                aria-label="Close"></button>
-                        </div>
-                    @endif
-                    <div class="sidebar-options bg-light p-1">
-                        <div v-if="figuraSeleccionada&&figuraObjeto.type!=='line'"
-                            class="filled px-2 mb-4 mt-3 p-1 border">
-                            <div class="d-flex flex-column text-center mb-3">
-                                <h2 class="px-2 mb-0 text-secondary">
-                                    Borde
-                                </h2>
-                            </div>
-                            <div class="row justify-content-center px-2 m-0">
-                                <div class="row justify-content-between" style="display: flex">
-                                    <div class="col-6 mb-2">
-
-                                        <label for="" class="form-label text-black">Color</label>
-                                        <input class="border" type="color" id="color_pick2"
-                                            @change="cambiarColor(figuraObjeto.id, 'border')" value="#000000"
-                                            style="width:85%;">
-
-                                    </div>
-
-                                    <div class="col-6 mb-2">
-
-                                        <label for="" class="form-label text-black">Opacidad</label>
-                                        <input type="number" name="" id="border_a" class="ms-2 border"
-                                            min="0" max="255" v-model="figuraObjeto.border_a">
-
-                                    </div>
-                                </div>
-
-                                <div class="col-12 mb-2">
-                                    <div class="d-flex justify-content-center">
-                                        <label for="" class="me-4 text-black">Grosor:</label>
-                                        <input type="number" name="" id="thickness" class="ms-2 me-1 border"
-                                            min="0" max="255" v-model="figuraObjeto.thickness">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div v-if="figuraSeleccionada" class="filled px-2 mb-4 p-1 border">
-                            <div class="d-flex flex-column text-center mb-3">
-                                <h2 class="px-2 mb-0 text-secondary">
-                                    Relleno
-                                </h2>
-                            </div>
-                            <div class="row justify-content-center px-2 m-0">
-                                <div class="row justify-content-between" style="display: flex">
-                                    <div class="col-6 mb-2">
-                                        <label for="" class="form-label text-black">Color</label>
-                                        <input v-if="figuraObjeto.type==='line'" type="color" id="color_pick"
-                                            @change="cambiarColor(figuraObjeto.id, 'fill')" value="#000000"
-                                            style="width:85%; form-control border">
-                                        <input v-else type="color" id="color_pick"
-                                            @change="cambiarColor(figuraObjeto.id, 'fill')" value="#ffffff"
-                                            style="width:85%; form-control border">
-                                    </div>
-                                    <div class="col-6 mb-2">
-                                        <label for="" class="form-label text-black">
-                                            Opacidad
-                                        </label>
-                                        <input type="number" name="" id="fill_a" class="ms-2 border"
-                                            min="0" max="255" v-model="figuraObjeto.fill_a">
-                                    </div>
-                                </div>
-                                <div v-if="figuraObjeto.type==='line'" class="col-12 mb-2">
-                                    <div class="d-flex justify-content-center">
-                                        <label for="" class="me-4 text-black">Grosor:</label>
-                                        <input type="number" name="" id="thickness" class="ms-2 me-1 border"
-                                            min="1" max="255" v-model="figuraObjeto.thickness">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div v-if="figuraSeleccionada && figuraObjeto.type=='text'"
-                            class="measures px-2 mb-4 p-1 border text-black">
-                            <h2 class="text-center px-2 text-secondary">
-                                Contenido
+                    <div v-if="figuraSeleccionada" class="filled px-2 mb-4 p-1 border">
+                        <div class="d-flex flex-column text-center mb-3">
+                            <h2 class="px-2 mb-0 text-secondary">
+                                Relleno
                             </h2>
-                            <div class="row justify-content-center px-2 m-0">
-                                <div class="row justify-content-between" style="display: flex">
-                                    <div class="col-12 mb-2 text-center">
-                                        <label for="">Texto</label>
-                                        <input type="text" name="" id="text" class="ms-2 border"
-                                            minlength="0" maxlength="150" placeholder="Escribe aquí"
-                                            v-model="figuraObjeto.text">
-                                    </div>
-
-                                </div>
-                                <div class="col-12 mb-2">
-                                    <div class="d-flex justify-content-center">
-                                        <label for="">Tamaño:</label>
-                                        <input type="number" name="" id="size" class="ms-2 border"
-                                            min="0" v-model="figuraObjeto.size">
-                                    </div>
-
-                                </div>
-
-                                <div v-if="figuraObjeto.corner!=null" class="col-12 mb-2">
-                                    <div class="d-flex">
-                                        <label for="">Radius-corner:</label>
-                                        <input type="number" name="" id="rounded_corner" class="ms-2 border"
-                                            min="0" v-model="figuraObjeto.corner">
-                                    </div>
-                                </div>
-                            </div>
                         </div>
-
-                        <div v-if="figuraSeleccionada && figuraObjeto.type!=='line' && figuraObjeto.type!=='text'"
-                            class="measures px-2 mb-4 p-1 border text-black">
-                            <h2 class="text-center px-2 text-secondary">
-                                Dimensiones
-                            </h2>
-                            <div class="row justify-content-center px-2 m-0">
-                                <div class="row justify-content-between" style="display: flex">
-                                    <div class="col-6 mb-2">
-                                        <label for="">Ancho</label>
-                                        <input type="number" name="" id="w" class="border"
-                                            v-model="figuraObjeto.w">
-                                    </div>
-                                    <div class="col-6 mb-2">
-                                        <label for="">Alto</label>
-                                        <input type="number" name="" id="h" class="border"
-                                            v-model="figuraObjeto.h">
-                                    </div>
-                                </div>
-                                <div v-if="figuraObjeto.corner!=null" class="col-12 mb-2">
-                                    <div class="d-flex">
-                                        <label for="">Radius-corner:</label>
-                                        <input type="number" name="" id="rounded_corner" class="ms-2 border"
-                                            min="0" v-model="figuraObjeto.corner">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div v-if="figuraSeleccionada && figuraObjeto.type!=='line'"
-                            class="measures px-2 mb-4 p-1 border text-black">
-                            <h2 class="text-center px-2 text-secondary">
-                                Coordenadas
-                            </h2>
-                            <div class="row justify-content-center px-2 m-0">
-                                <div class="row justify-content-between" style="display: flex">
-                                    <div class="col-6 mb-2">
-                                        <label for="" class="ms-3">X</label>
-                                        <input type="number" name="" id="x" class="border"
-                                            min="0" v-model="figuraObjeto.x">
-                                    </div>
-                                    <div class="col-6 mb-2">
-                                        <label for="" class="ms-3">Y</label>
-                                        <input type="number" name="" id="y" class="border"
-                                            min="0" v-model="figuraObjeto.y">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div v-if="figuraSeleccionada && figuraObjeto.type=='line'"
-                            class="measures px-2 mb-4 p-1 border text-black">
-                            <h2 class="text-center px-2 text-secondary">
-                                Coordenadas
-                            </h2>
-                            <div class="row justify-content-between px-2 m-0" style="display: flex">
+                        <div class="row justify-content-center px-2 m-0">
+                            <div class="row justify-content-between" style="display: flex">
                                 <div class="col-6 mb-2">
-                                    <label for="">Punto[0]X</label>
-                                    <input type="number" name="" id="x1" class="ms-2 border"
-                                        min="0" v-model="figuraObjeto.x1">
+                                    <label for="" class="form-label text-black">Color</label>
+                                    <input v-if="figuraObjeto.type==='line'" type="color" id="color_pick"
+                                        @change="cambiarColor(figuraObjeto.id, 'fill')"
+                                        :value="rgbToHex(figuraObjeto.fill_r, figuraObjeto.fill_g, figuraObjeto.fill_b)"
+                                        style="width:85%; form-control border">
+                                    <input v-else type="color" id="color_pick"
+                                        @change="cambiarColor(figuraObjeto.id, 'fill')"
+                                        :value="rgbToHex(figuraObjeto.fill_r, figuraObjeto.fill_g, figuraObjeto.fill_b)"
+                                        style="width:85%; form-control border">
                                 </div>
                                 <div class="col-6 mb-2">
-                                    <label for="">Punto[0]Y:</label>
-                                    <input type="number" name="" id="y1" class="ms-2 border"
-                                        min="0" v-model="figuraObjeto.y1">
+                                    <label for="" class="form-label text-black">
+                                        Opacidad
+                                    </label>
+                                    <input type="number" name="" id="fill_a" class="ms-2 border"
+                                        min="0" max="255" v-model="figuraObjeto.fill_a">
                                 </div>
                             </div>
-                            <div class="row justify-content-between px-2 m-0" style="display: flex">
-                                <div class="col-6 mb-2">
-                                    <label for="" cl>Punto[1]X</label>
-                                    <input type="number" name="" id="x2" class="ms-2 border"
-                                        min="0" v-model="figuraObjeto.x2">
-                                </div>
-                                <div class="col-6 mb-2">
-                                    <label for="">Punto[1]X</label>
-                                    <input type="number" name="" id="y2" class="ms-2 border"
-                                        min="0" v-model="figuraObjeto.y2">
+                            <div v-if="figuraObjeto.type==='line'" class="col-12 mb-2">
+                                <div class="d-flex justify-content-center">
+                                    <label for="" class="me-4 text-black">Grosor:</label>
+                                    <input type="number" name="" id="thickness" class="ms-2 me-1 border"
+                                        min="1" max="255" v-model="figuraObjeto.thickness">
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <div v-if="figuraSeleccionada && figuraObjeto.type=='text'"
+                        class="measures px-2 mb-4 p-1 border text-black">
+                        <h2 class="text-center px-2 text-secondary">
+                            Contenido
+                        </h2>
+                        <div class="row justify-content-center px-2 m-0">
+                            <div class="row justify-content-between" style="display: flex">
+                                <div class="col-12 mb-2 text-center">
+                                    <label for="">Texto</label>
+                                    <input type="text" name="" id="text" class="ms-2 border"
+                                        minlength="0" maxlength="150" placeholder="Escribe aquí"
+                                        v-model="figuraObjeto.text">
+                                </div>
+
+                            </div>
+                            <div class="col-12 mb-2">
+                                <div class="d-flex justify-content-center">
+                                    <label for="">Tamaño:</label>
+                                    <input type="number" name="" id="size" class="ms-2 border"
+                                        min="0" v-model="figuraObjeto.size">
+                                </div>
+
+                            </div>
+
+                            <div v-if="figuraObjeto.corner!=null" class="col-12 mb-2">
+                                <div class="d-flex">
+                                    <label for="">Radius-corner:</label>
+                                    <input type="number" name="" id="rounded_corner" class="ms-2 border"
+                                        min="0" v-model="figuraObjeto.corner">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="figuraSeleccionada && figuraObjeto.type!=='line' && figuraObjeto.type!=='text'"
+                        class="measures px-2 mb-4 p-1 border text-black">
+                        <h2 class="text-center px-2 text-secondary">
+                            Dimensiones
+                        </h2>
+                        <div class="row justify-content-center px-2 m-0">
+                            <div class="row justify-content-between" style="display: flex">
+                                <div class="col-6 mb-2">
+                                    <label for="">Ancho</label>
+                                    <input type="number" name="" id="w" class="border"
+                                        v-model="figuraObjeto.w">
+                                </div>
+                                <div class="col-6 mb-2">
+                                    <label for="">Alto</label>
+                                    <input type="number" name="" id="h" class="border"
+                                        v-model="figuraObjeto.h">
+                                </div>
+                            </div>
+                            <div v-if="figuraObjeto.corner!=null" class="col-12 mb-2">
+                                <div class="d-flex">
+                                    <label for="">Radius-corner:</label>
+                                    <input type="number" name="" id="rounded_corner" class="ms-2 border"
+                                        min="0" v-model="figuraObjeto.corner">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="figuraSeleccionada && figuraObjeto.type!=='line'"
+                        class="measures px-2 mb-4 p-1 border text-black">
+                        <h2 class="text-center px-2 text-secondary">
+                            Coordenadas
+                        </h2>
+                        <div class="row justify-content-center px-2 m-0">
+                            <div class="row justify-content-between" style="display: flex">
+                                <div class="col-6 mb-2">
+                                    <label for="" class="ms-3">X</label>
+                                    <input type="number" name="" id="x" class="border"
+                                        min="0" v-model="figuraObjeto.x">
+                                </div>
+                                <div class="col-6 mb-2">
+                                    <label for="" class="ms-3">Y</label>
+                                    <input type="number" name="" id="y" class="border"
+                                        min="0" v-model="figuraObjeto.y">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="figuraSeleccionada && figuraObjeto.type=='line'"
+                        class="measures px-2 mb-4 p-1 border text-black">
+                        <h2 class="text-center px-2 text-secondary">
+                            Coordenadas
+                        </h2>
+                        <div class="row justify-content-between px-2 m-0" style="display: flex">
+                            <div class="col-6 mb-2">
+                                <label for="">Punto[0]X</label>
+                                <input type="number" name="" id="x1" class="ms-2 border"
+                                    min="0" v-model="figuraObjeto.x1">
+                            </div>
+                            <div class="col-6 mb-2">
+                                <label for="">Punto[0]Y:</label>
+                                <input type="number" name="" id="y1" class="ms-2 border"
+                                    min="0" v-model="figuraObjeto.y1">
+                            </div>
+                        </div>
+                        <div class="row justify-content-between px-2 m-0" style="display: flex">
+                            <div class="col-6 mb-2">
+                                <label for="" cl>Punto[1]X</label>
+                                <input type="number" name="" id="x2" class="ms-2 border"
+                                    min="0" v-model="figuraObjeto.x2">
+                            </div>
+                            <div class="col-6 mb-2">
+                                <label for="">Punto[1]X</label>
+                                <input type="number" name="" id="y2" class="ms-2 border"
+                                    min="0" v-model="figuraObjeto.y2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </form>
@@ -472,6 +469,9 @@
                 },
                 obtenerColorRGB(r, g, b) {
                     return `rgb(${r}, ${g}, ${b})`;
+                },
+                rgbToHex(r, g, b) {
+                    return ('#' + r.toString(16) + g.toString(16) + b.toString(16));
                 },
                 asignarIconoFigura(tipo) {
                     if (tipo === 'rect') {
