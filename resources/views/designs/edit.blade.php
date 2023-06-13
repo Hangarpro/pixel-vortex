@@ -27,12 +27,12 @@
                         </button>
                         <button type="button" id="buttonRect" @click="dibujarFigura('rect')"
                             :class="(dibujar == true && tipoFigura === 'rect') ? 'bg-black' : ''" class="mx-1 border">
-                            <i class="fa-solid fa-rectangle"
+                            <i class="fa-solid fa-square"
                                 :style="(dibujar == true && tipoFigura === 'rect') ? 'color: white' : ''"></i>
                         </button>
                         <button type="button" id="buttonLine" @click="dibujarFigura('line')"
                             :class="(dibujar == true && tipoFigura === 'line') ? 'bg-black' : ''" class="mx-1 border">
-                            <i class="fa-regular fa-pen-line"
+                            <i class="fa-solid fa-slash"
                                 :style="(dibujar == true && tipoFigura === 'line') ? 'color: white' : ''"></i>
                         </button>
                         <button type="button" id="buttonEllipse" @click="dibujarFigura('ellipse')"
@@ -43,7 +43,7 @@
                         </button>
                         <button type="button" id="buttonText" @click="dibujarFigura('text')"
                             :class="(dibujar == true && tipoFigura === 'text') ? 'bg-black' : ''" class="mx-1 border">
-                            <i class="fa-solid fa-text"
+                            <i class="fa-solid fa-t"
                                 :style="(dibujar == true && tipoFigura === 'text') ? 'color: white' : ''"></i>
                         </button>
                     </div>
@@ -477,7 +477,7 @@
                     if (tipo === 'rect') {
                         return 'fa-square';
                     } else if (tipo === 'line') {
-                        return 'fa-minus';
+                        return 'fa-slash';
                     } else if (tipo === 'ellipse') {
                         return 'fa-circle';
                     } else if (tipo === 'text') {

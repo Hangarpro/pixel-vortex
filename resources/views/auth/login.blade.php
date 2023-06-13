@@ -15,28 +15,26 @@
         <div class="signUp-container">
             <div class="shadowbox">
                 <h2 class="title">Iniciar sesión</h2>
-                <form action="{{ route('login') }}" method="POST">
+                <div>
+                    @if(session('info'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="mdi mdi-check-all me-2">{{session('info')}}</i>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+                </div>
+                <form action="{{ route('login.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label class="form-label">Correo electrónico</label>
                         <input type="email" value="{{old('email')}}"
                             title="Por favor, introduce una dirección de correo electrónico válida en el formato usuario@dominio.com"
                             class="form-control border border-primary" id="inputEmail" name="email" />
-                            @error('email')
-                                <div>
-                                    {{$message}}
-                                </div>
-                            @enderror
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Contraseña</label>
                         <input type="password" class="form-control border border-primary"
                             id="inputPassword" name="password" />
-                            @error('password')
-                                <div>
-                                    {{$message}}
-                                </div>
-                            @enderror
                     </div>
                     <div class="d-grid">
                         <button class="signButton" type="submit">

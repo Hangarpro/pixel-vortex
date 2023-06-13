@@ -14,30 +14,14 @@
     <div class="main-container">
         <div class="signUp-container">
             <div class="shadowbox">
-                @if (session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>Éxito</strong> - {{session('success')}}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @elseif (session('error'))
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <strong>Error</strong> - {{session('error')}}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
                 <h2 class="title">Crear Cuenta</h2>
-                <form action="{{ route('user.store') }}" method="POST">
+                <form action="{{ route('signup.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label class="form-label">Nombre de usuario</label>
                         <input type="text" pattern="[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]" value="{{old('username')}}"
                             title="Por favor, introduzca solo carácteres alfanúmericos, puntos y guiones"
                             class="form-control" id="inputUser" name="username" />
-                            @error('username')
-                                <div>
-                                    {{$message}}
-                                </div>
-                            @enderror
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Correo electrónico</label>
@@ -45,8 +29,9 @@
                             title="Por favor, introduce una dirección de correo electrónico válida en el formato usuario@dominio.com"
                             class="form-control border border-primary" id="inputEmail" name="email" />
                             @error('email')
-                                <div>
-                                    {{$message}}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <i class="mdi mdi-check-all me-2">{{$message}}</i>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
                             @enderror
                     </div>
@@ -55,8 +40,9 @@
                         <input type="password" class="form-control border border-primary"
                             id="inputPassword" name="password" />
                             @error('password')
-                                <div>
-                                    {{$message}}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <i class="mdi mdi-check-all me-2">{{$message}}</i>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
                             @enderror
                     </div>
@@ -65,8 +51,9 @@
                         <input type="password" class="form-control border border-primary"
                             id="inputPassword2" name="password_confirmation" />
                             @error('password_confirmation')
-                                <div>
-                                    {{$message}}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <i class="mdi mdi-check-all me-2">{{$message}}</i>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
                             @enderror
                     </div>
